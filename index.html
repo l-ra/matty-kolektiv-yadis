@@ -13,42 +13,46 @@
 </head>
 <body>
   <header class="hero">
-    <div>
-      <div class="eyebrow">MATTY KOLEKTIV · DJERBA 2026</div>
-      <h1>Yadis Djerba</h1>
-      <div class="sub">Golf Thalasso & Spa · Sidi Mahrez</div>
+    <div class="hero-top">
+      <div>
+        <div class="eyebrow">MATTY KOLEKTIV · DJERBA 2026</div>
+        <h1>Yadis Djerba</h1>
+        <div class="sub">Golf Thalasso & Spa · Sidi Mahrez</div>
+      </div>
+      <div class="hero-actions">
+        <button id="installBtn" class="ghost" hidden>Instalovat</button>
+        <button id="shareBtn" class="ghost">Sdílet</button>
+      </div>
     </div>
-    <div class="hero-actions">
-      <button id="installBtn" class="ghost" hidden>Instalovat</button>
-      <button id="shareBtn" class="ghost">Sdílet</button>
+
+    <div class="hero-quick">
+      <button class="room-pill" data-goto="private" aria-label="Otevřít moje údaje a číslo pokoje">
+        <span class="room-icon">🛏</span>
+        <span><small>Můj pokoj</small><strong id="roomSummary">Nastavit</strong></span>
+      </button>
+      <span id="onlineBadge" class="pill hero-online"></span>
+    </div>
+
+    <div class="stay-meter" aria-label="Průběh pobytu od 19. října do 2. listopadu 2026">
+      <div class="stay-meter-head">
+        <span>Pobyt · 14 nocí</span>
+        <strong id="stayStatus">19. 10. – 2. 11.</strong>
+      </div>
+      <div class="thermometer-track">
+        <div id="stayFill" class="thermometer-fill"></div>
+        <div id="stayMarker" class="thermometer-marker" aria-hidden="true"></div>
+      </div>
+      <div class="stay-meter-foot">
+        <span><b>19. 10.</b><small>příjezd</small></span>
+        <span id="stayDetail" class="stay-detail">2 dospělí · V3</span>
+        <span class="right"><b>2. 11.</b><small>odjezd</small></span>
+      </div>
     </div>
   </header>
 
   <main>
     <section class="page active" data-page="home">
-      <div class="time-card">
-        <div>
-          <span class="label">Čas na Djerbě</span>
-          <strong id="tunisTime">--:--</strong>
-          <span id="tunisDate" class="muted"></span>
-        </div>
-        <span id="onlineBadge" class="pill"></span>
-      </div>
-
       <div id="meetingCard" class="card accent"></div>
-
-      <div class="grid two">
-        <button class="card room-card" data-goto="private">
-          <span class="label">Můj pokoj</span>
-          <strong id="roomSummary">Nastavit číslo pokoje</strong>
-          <span class="muted">ukládá se jen v tomto telefonu</span>
-        </button>
-        <div class="card">
-          <span class="label">Pobyt</span>
-          <strong>19. 10. – 2. 11. 2026</strong>
-          <span class="muted">2 dospělí · 0 dětí · 0 kojenců · Standard room · autobus V3</span>
-        </div>
-      </div>
 
       <h2>Právě teď</h2>
       <div id="nowServices" class="stack"></div>
