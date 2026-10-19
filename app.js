@@ -71,17 +71,44 @@ function statusFor(s, nowMin){
 function esc(s=''){return s.replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));}
 function serviceHtml(s,nowMin){ const st=statusFor(s,nowMin); return `<div class="service-row"><span class="status-dot ${st.open?'open':''}"></span><div class="service-main"><div class="service-name">${esc(s.name)}</div><div class="service-where">${esc(s.where)} · ${scheduleText(s)}</div></div><span class="status ${st.open?'open':''}">${st.open?'OTEVŘENO · ':''}${st.label}</span></div>`; }
 
-function renderClock(){
+function renderStatus(){
   const p=tunisParts();
-  document.getElementById('tunisTime').textContent=`${p.hour}:${p.minute}`;
-  const d=new Date();
-  document.getElementById('tunisDate').textContent=new Intl.DateTimeFormat('cs-CZ',{timeZone:TZ,weekday:'long',day:'numeric',month:'long'}).format(d);
   const open=services.filter(s=>statusFor(s,p.mins).open);
   document.getElementById('nowServices').innerHTML=open.map(s=>serviceHtml(s,p.mins)).join('') || '<div class="card">Momentálně není otevřená žádná časově omezená služba.</div>';
   const next=services.filter(s=>!statusFor(s,p.mins).open).map(s=>({s,st:statusFor(s,p.mins)})).sort((a,b)=>a.st.delta-b.st.delta).slice(0,4);
   document.getElementById('nextServices').innerHTML=next.map(x=>serviceHtml(x.s,p.mins)).join('');
   document.getElementById('serviceList').innerHTML=['Jídlo','Bary','Hotel'].map(g=>`<h2>${g}</h2>${services.filter(s=>s.group===g).map(s=>serviceHtml(s,p.mins)).join('')}`).join('');
   renderMeeting();
+  renderStayProgress();
+}
+function renderStayProgress(){
+  const start=new Date('2026-10-19T00:00:00+01:00');
+  const end=new Date('2026-11-02T00:00:00+01:00');
+  const now=new Date();
+  const total=end-start;
+  const raw=(now-start)/total;
+  const progress=Math.max(0,Math.min(1,raw));
+  const pct=(progress*100).toFixed(1)+'%';
+  document.getElementById('stayFill').style.width=pct;
+  document.getElementById('stayMarker').style.left=pct;
+
+  const status=document.getElementById('stayStatus');
+  const detail=document.getElementById('stayDetail');
+  if(now<start){
+    const days=Math.max(1,Math.ceil((start-now)/86400000));
+    status.textContent=`Za ${days} ${days===1?'den':'dní'}`;
+    detail.textContent='2 dospělí · Standard room · V3';
+    return;
+  }
+  if(now>=end){
+    status.textContent='Pobyt ukončen';
+    detail.textContent='19. 10. – 2. 11. 2026 · 14 nocí';
+    return;
+  }
+  const day=Math.min(14,Math.floor((now-start)/86400000)+1);
+  const nightsLeft=Math.max(0,Math.ceil((end-now)/86400000));
+  status.textContent=`${day}. den pobytu`;
+  detail.textContent=nightsLeft===1?'zbývá 1 noc':`zbývá ${nightsLeft} nocí`;
 }
 function renderMeeting(){
   const box=document.getElementById('meetingCard');
@@ -124,7 +151,7 @@ function goto(page){
   document.querySelectorAll('.nav-btn').forEach(x=>x.classList.toggle('active',x.dataset.target===page));
   window.scrollTo({top:0,behavior:'smooth'});
 }
-function renderOnline(){const el=document.getElementById('onlineBadge'); const on=navigator.onLine; el.textContent=on?'ONLINE':'OFFLINE'; el.className='pill '+(on?'ok':'off');}
+function renderOnline(){const el=document.getElementById('onlineBadge'); const on=navigator.onLine; el.textContent=on?'ONLINE':'OFFLINE'; el.className='pill hero-online '+(on?'ok':'off');}
 
 let deferredPrompt;
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();deferredPrompt=e;document.getElementById('installBtn').hidden=false});
@@ -136,5 +163,5 @@ document.querySelectorAll('.nav-btn').forEach(b=>b.addEventListener('click',()=>
 document.querySelectorAll('[data-goto]').forEach(b=>b.addEventListener('click',()=>goto(b.dataset.goto)));
 window.addEventListener('online',renderOnline); window.addEventListener('offline',renderOnline);
 
-renderClock(); renderContacts(); renderInfo(); renderTrips(); loadPrivate(); renderOnline(); setInterval(renderClock,30000);
+renderStatus(); renderContacts(); renderInfo(); renderTrips(); loadPrivate(); renderOnline(); setInterval(renderStatus,30000);
 if('serviceWorker' in navigator) window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));
