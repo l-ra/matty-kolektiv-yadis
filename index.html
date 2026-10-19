@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#075985">
+  <meta name="description" content="Offline průvodce pobytem v Yadis Djerba Golf Thalasso & Spa.">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./icons/icon-192.png">
+  <link rel="apple-touch-icon" href="./icons/icon-192.png">
+  <link rel="stylesheet" href="./style.css">
+  <title>Matty kolektiv · Yadis Djerba</title>
+</head>
+<body>
+  <header class="hero">
+    <div>
+      <div class="eyebrow">MATTY KOLEKTIV · DJERBA 2026</div>
+      <h1>Yadis Djerba</h1>
+      <div class="sub">Golf Thalasso & Spa · Sidi Mahrez</div>
+    </div>
+    <div class="hero-actions">
+      <button id="installBtn" class="ghost" hidden>Instalovat</button>
+      <button id="shareBtn" class="ghost">Sdílet</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page active" data-page="home">
+      <div class="time-card">
+        <div>
+          <span class="label">Čas na Djerbě</span>
+          <strong id="tunisTime">--:--</strong>
+          <span id="tunisDate" class="muted"></span>
+        </div>
+        <span id="onlineBadge" class="pill"></span>
+      </div>
+
+      <div id="meetingCard" class="card accent"></div>
+
+      <div class="grid two">
+        <button class="card room-card" data-goto="private">
+          <span class="label">Můj pokoj</span>
+          <strong id="roomSummary">Nastavit číslo pokoje</strong>
+          <span class="muted">ukládá se jen v tomto telefonu</span>
+        </button>
+        <div class="card">
+          <span class="label">Pobyt</span>
+          <strong>19. 10. – 2. 11. 2026</strong>
+          <span class="muted">2 dospělí · 0 dětí · 0 kojenců · Standard room · autobus V3</span>
+        </div>
+      </div>
+
+      <h2>Právě teď</h2>
+      <div id="nowServices" class="stack"></div>
+
+      <h2>Co bude následovat</h2>
+      <div id="nextServices" class="stack compact"></div>
+
+      <div class="alert warn"><b>Vodu z kohoutku nepijte.</b> K pití používejte balenou vodu. Na mytí ovoce/zeleniny a čištění zubů je podle informací CK voda z vodovodu použitelná.</div>
+      <div class="alert"><b>Tísňová linka:</b> <a href="tel:112">112</a> · <b>ERGO asistence:</b> <a href="tel:+420221860606">+420 221 860 606</a></div>
+    </section>
+
+    <section class="page" data-page="services">
+      <div class="section-head"><h2>Služby hotelu</h2><span>stav se počítá podle času Africa/Tunis</span></div>
+      <div id="serviceList" class="stack"></div>
+      <div class="card prose">
+        <h3>Další hotelové informace</h3>
+        <p><b>Recepce:</b> 24/7. <b>Check-out:</b> do 12:00; pozdní check-out podle dostupnosti, po domluvě na recepci, příplatek 50 €.</p>
+        <p><b>Trezor:</b> zdarma. Hotel upozorňuje, že neodpovídá za věci, které nejsou v trezoru.</p>
+        <p><b>Telefon:</b> pro interní volání vytočte číslo pokoje; recepce je na interní volbě <b>9</b>.</p>
+        <p><b>Wi‑Fi:</b> zdarma v celém hotelu, bez hesla.</p>
+        <p><b>Lehátka:</b> rezervování lehátek je zakázáno.</p>
+        <p><b>Ručníky:</b> ztráta / nevrácení = 10 €; koupelnové ručníky musí zůstat na pokoji.</p>
+        <p><b>Tematická restaurace:</b> 1× za pobyt s rezervací, pro pobyty na 7 a více nocí.</p>
+      </div>
+    </section>
+
+    <section class="page" data-page="contacts">
+      <div class="section-head"><h2>Důležité kontakty</h2><span>volání, SMS a WhatsApp</span></div>
+      <div class="alert warn">Blue Style upozorňuje, že SMS z českého čísla na tuniské číslo je nespolehlivá, i když telefon může zobrazit doručenku. V naléhavém případě raději volejte.</div>
+      <div id="contactList" class="stack"></div>
+    </section>
+
+    <section class="page" data-page="info">
+      <div class="section-head"><h2>Důležité informace</h2><span>podle předaných materiálů Blue Style a hotelu</span></div>
+      <div id="infoList" class="accordion-list"></div>
+    </section>
+
+    <section class="page" data-page="trips">
+      <div class="section-head"><h2>Výlety</h2><span>stručný obsah letáku</span></div>
+      <div id="tripList" class="stack"></div>
+      <div class="alert">Ceny, storno podmínky a aktuální termíny byly v tištěném materiálu dostupné přes QR kód; na fotografii nejsou vypsané.</div>
+    </section>
+
+    <section class="page" data-page="private">
+      <div class="section-head"><h2>Moje údaje</h2><span>jen v tomto zařízení</span></div>
+      <div class="card form-card">
+        <label>Číslo pokoje<input id="roomInput" inputmode="numeric" autocomplete="off" placeholder="např. 214"></label>
+        <label>Soukromá poznámka<textarea id="noteInput" rows="4" placeholder="např. kde jsme nechali věci, čas srazu…"></textarea></label>
+        <label>Číslo voucheru <span class="optional">(volitelné)</span><input id="voucherInput" autocomplete="off" placeholder="uloží se pouze lokálně"></label>
+        <label>Vedoucí rezervace <span class="optional">(volitelné)</span><input id="travelerInput" autocomplete="off" placeholder="uloží se pouze lokálně"></label>
+        <button id="savePrivate" class="primary">Uložit do telefonu</button>
+        <button id="clearPrivate" class="danger-link">Smazat lokální údaje</button>
+      </div>
+      <div class="alert privacy"><b>Soukromí:</b> jméno vedoucího rezervace a číslo voucheru nejsou vloženy do veřejného webu. Pokud je sem doplníte, zůstanou v localStorage tohoto prohlížeče a neposílají se na server.</div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav" aria-label="Hlavní navigace">
+    <button class="nav-btn active" data-target="home"><span>⌂</span>Domů</button>
+    <button class="nav-btn" data-target="services"><span>◷</span>Služby</button>
+    <button class="nav-btn" data-target="info"><span>ⓘ</span>Info</button>
+    <button class="nav-btn" data-target="contacts"><span>☎</span>Kontakty</button>
+    <button class="nav-btn" data-target="trips"><span>☀</span>Výlety</button>
+  </nav>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
