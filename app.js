@@ -1,7 +1,6 @@
 
 const TZ = 'Africa/Tunis';
 const stay = { from:'2026-10-19', to:'2026-11-02', bus:'V3', adults:2 };
-const meetingAt = new Date('2026-10-20T11:15:00+01:00');
 
 const services = [
   {name:'Recepce', where:'hotel', windows:[[0,1440]], group:'Hotel'},
@@ -21,9 +20,9 @@ const services = [
 ];
 
 const contacts = [
+  {name:'Ivana Opatová', role:'hlavní delegátka Blue Style', display:'+216 58 230 226', phone:'+21658230226', message:true},
   {name:'Dagmar Pecháčková', role:'delegátka Blue Style', display:'+216 29 657 590', phone:'+21629657590', message:true},
   {name:'Vendula Hofmanová', role:'delegátka Blue Style', display:'+216 53 664 155', phone:'+21653664155', message:true},
-  {name:'Ivana Opatová', role:'delegátka Blue Style', display:'+216 58 230 226', phone:'+21658230226', message:true},
   {name:'Jitka Opletalová', role:'delegátka Blue Style', display:'+216 53 662 897', phone:'+21653662897', message:true},
   {name:'Tereza Seidlová', role:'delegátka Blue Style', display:'+216 58 230 481', phone:'+21658230481', message:true},
   {name:'ERGO Cestovní pojišťovna', role:'asistenční služba · česky mluvící operátoři', display:'+420 221 860 606', phone:'+420221860606', message:false},
@@ -78,7 +77,6 @@ function renderStatus(){
   const next=services.filter(s=>!statusFor(s,p.mins).open).map(s=>({s,st:statusFor(s,p.mins)})).sort((a,b)=>a.st.delta-b.st.delta).slice(0,4);
   document.getElementById('nextServices').innerHTML=next.map(x=>serviceHtml(x.s,p.mins)).join('');
   document.getElementById('serviceList').innerHTML=['Jídlo','Bary','Hotel'].map(g=>`<h2>${g}</h2>${services.filter(s=>s.group===g).map(s=>serviceHtml(s,p.mins)).join('')}`).join('');
-  renderMeeting();
   renderStayProgress();
 }
 function renderStayProgress(){
@@ -110,27 +108,19 @@ function renderStayProgress(){
   status.textContent=`${day}. den pobytu`;
   detail.textContent=nightsLeft===1?'zbývá 1 noc':`zbývá ${nightsLeft} nocí`;
 }
-function renderMeeting(){
-  const box=document.getElementById('meetingCard');
-  const now=new Date(); const ms=meetingAt-now;
-  if(ms>0){
-    const hours=Math.floor(ms/36e5), days=Math.floor(hours/24), rem=hours%24;
-    const when=days>0?`za ${days} d ${rem} h`:`za ${hours} h`;
-    box.innerHTML=`<span class="label">Nejbližší důležitá událost</span><strong>Uvítací schůzka · út 20. 10. v 11:15</strong><span class="muted">Recepce · ${when} · autobus V3</span>`;
-  } else {
-    box.innerHTML=`<span class="label">Uvítací schůzka</span><strong>út 20. 10. v 11:15 · recepce</strong><span class="muted">Autobus V3</span>`;
-  }
-}
 function messageText(){
   const room=localStorage.getItem('yadis.room');
   return `Dobrý den, jsme klienti Blue Style v hotelu Yadis Djerba Golf Thalasso Spa${room?`, pokoj ${room}`:''}.`;
 }
+function contactCardHtml(c){
+  const num=c.phone.replace('+','');
+  const msg=encodeURIComponent(messageText());
+  return `<div class="contact-card"><div class="contact-head"><div><div class="contact-name">${esc(c.name)}</div><div class="muted">${esc(c.role)}</div></div><div class="contact-number">${esc(c.display)}</div></div><div class="actions"><a class="primary-action" href="tel:${c.phone}">Volat</a>${c.message?`<a href="sms:${c.phone}?body=${msg}">SMS</a><a target="_blank" rel="noopener" href="https://wa.me/${num}?text=${msg}">WhatsApp</a>`:''}</div></div>`;
+}
 function renderContacts(){
-  document.getElementById('contactList').innerHTML=contacts.map(c=>{
-    const num=c.phone.replace('+','');
-    const msg=encodeURIComponent(messageText());
-    return `<div class="contact-card"><div class="contact-head"><div><div class="contact-name">${esc(c.name)}</div><div class="muted">${esc(c.role)}</div></div><div class="contact-number">${esc(c.display)}</div></div><div class="actions"><a class="primary-action" href="tel:${c.phone}">Volat</a>${c.message?`<a href="sms:${c.phone}?body=${msg}">SMS</a><a target="_blank" rel="noopener" href="https://wa.me/${num}?text=${msg}">WhatsApp</a>`:''}</div></div>`;
-  }).join('') + `<div class="contact-card"><div class="contact-name">Hotelová recepce</div><div class="muted">z telefonu na pokoji vytočte interní volbu <b>9</b></div></div>`;
+  const primary=contacts[0];
+  document.getElementById('primaryContact').innerHTML=contactCardHtml(primary);
+  document.getElementById('contactList').innerHTML=contacts.map(contactCardHtml).join('') + `<div class="contact-card"><div class="contact-name">Hotelová recepce</div><div class="muted">z telefonu na pokoji vytočte interní volbu <b>9</b></div></div>`;
 }
 function renderInfo(){ document.getElementById('infoList').innerHTML=info.map((x,i)=>`<details class="accordion" ${i<2?'open':''}><summary>${x.title}</summary><div class="body">${x.html}</div></details>`).join(''); }
 function renderTrips(){ document.getElementById('tripList').innerHTML=trips.map(t=>`<div class="trip-card"><h3>${esc(t.name)}</h3><span class="tag">${esc(t.tag)}</span><p>${esc(t.text)}</p></div>`).join(''); }
