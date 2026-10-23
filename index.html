@@ -57,8 +57,10 @@
       <h2>Právě teď</h2>
       <div id="nowServices" class="stack"></div>
 
-      <h2>Co bude následovat</h2>
-      <div id="nextServices" class="stack compact"></div>
+      <h2>Následující události</h2>
+      <div id="nextServices" hidden></div>
+      <div id="nextEvents" class="stack compact"></div>
+      <div id="eventSource" class="muted">Příliv a odliv: astronomická predikce pro Midoun (Djerba), orientační údaje nevhodné pro navigaci.</div>
 
       <div class="alert warn"><b>Vodu z kohoutku nepijte.</b> K pití používejte balenou vodu. Na mytí ovoce/zeleniny a čištění zubů je podle informací CK voda z vodovodu použitelná.</div>
       <div class="alert"><b>Tísňová linka:</b> <a href="tel:112">112</a> · <b>ERGO asistence:</b> <a href="tel:+420221860606">+420 221 860 606</a></div>
@@ -119,5 +121,6 @@
   </nav>
 
   <script src="./app.js" defer></script>
+  <script src="./tides.js" defer></script>
 </body>
 </html>
