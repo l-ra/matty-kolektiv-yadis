@@ -66,3 +66,8 @@ window.addEventListener('appinstalled',()=>{
 
 const displayModeQuery=window.matchMedia('(display-mode: standalone)');
 if(displayModeQuery.addEventListener) displayModeQuery.addEventListener('change',applyPwaMode);
+
+const financePlanEditor=document.createElement('script');
+financePlanEditor.src='./finance-plan-edit.js';
+financePlanEditor.async=false;
+document.head.appendChild(financePlanEditor);
