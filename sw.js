@@ -1,4 +1,4 @@
-const CACHE='yadis-pwa-v1.5.0';
+const CACHE='yadis-pwa-v1.5.1';
 const ASSETS=['./','./index.html','./style.css','./pwa.js','./app.js','./tides.js','./finance.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
 
 self.addEventListener('install',e=>e.waitUntil(
