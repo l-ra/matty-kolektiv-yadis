@@ -103,6 +103,134 @@
       <div class="alert">Ceny, storno podmínky a aktuální termíny byly v tištěném materiálu dostupné přes QR kód; na fotografii nejsou vypsané.</div>
     </section>
 
+    <section class="page" data-page="finance">
+      <div class="section-head"><h2>Finance</h2><span>offline evidence, směny a rozpočítání</span></div>
+
+      <div id="financeSummary" class="finance-summary"></div>
+      <div id="financeWarnings"></div>
+
+      <div class="card finance-toolbar">
+        <div>
+          <strong>Data jsou pouze v tomto zařízení</strong>
+          <span class="muted">Exportujte JSON jako zálohu nebo pro přenos do jiného telefonu.</span>
+        </div>
+        <div class="finance-actions">
+          <button id="financeExport" class="primary small">Export JSON</button>
+          <label class="file-button">Import JSON<input id="financeImport" type="file" accept="application/json,.json"></label>
+        </div>
+      </div>
+
+      <details class="accordion finance-accordion" open>
+        <summary>Nový pohyb</summary>
+        <form id="financeTxForm" class="body finance-form">
+          <input id="financeEditId" type="hidden">
+          <div class="form-grid">
+            <label>Typ
+              <select id="financeType">
+                <option value="expense">Výdaj</option>
+                <option value="income">Příjem / doplnění hotovosti</option>
+                <option value="withdrawal">Výběr z ATM</option>
+                <option value="exchange">Směna měny</option>
+                <option value="snapshot">Kontrolní stav hotovosti</option>
+              </select>
+            </label>
+            <label>Datum<input id="financeDate" type="date"></label>
+          </div>
+          <label>Popis<input id="financeDescription" placeholder="např. večeře, taxi, směna"></label>
+
+          <div id="financeMainAmount" class="form-grid">
+            <label>Částka<input id="financeAmount" type="number" step="0.01" inputmode="decimal" min="0"></label>
+            <label>Měna
+              <select id="financeCurrency"><option>EUR</option><option selected>TND</option><option>CZK</option></select>
+            </label>
+          </div>
+
+          <div id="financeExchangeTarget" class="form-grid" hidden>
+            <label>Získaná částka<input id="financeToAmount" type="number" step="0.01" inputmode="decimal" min="0"></label>
+            <label>Získaná měna
+              <select id="financeToCurrency"><option selected>TND</option><option>EUR</option><option>CZK</option></select>
+            </label>
+          </div>
+
+          <div class="form-grid">
+            <label>Zdroj / účet
+              <select id="financeAccount">
+                <option value="shared_cash">Společná hotovost</option>
+                <option value="card">Karta</option>
+                <option value="personal">Osobní peníze</option>
+                <option value="other">Jiné</option>
+              </select>
+            </label>
+            <label>Zaplatil / vložil
+              <select id="financePayer"><option value="">neuvedeno</option></select>
+            </label>
+          </div>
+
+          <div id="financeFeeRow" class="form-grid" hidden>
+            <label>Poplatek ATM<input id="financeFee" type="number" step="0.01" inputmode="decimal" min="0" value="0"></label>
+            <label>Měna poplatku
+              <select id="financeFeeCurrency"><option>EUR</option><option selected>TND</option><option>CZK</option></select>
+            </label>
+          </div>
+
+          <fieldset id="financeSplitBlock" class="split-block">
+            <legend>Rozpočítat mezi</legend>
+            <div class="split-toolbar">
+              <select id="financeSplitMode"><option value="equal">rovným dílem</option><option value="custom">vlastní částky</option></select>
+              <button id="financeSelectAll" type="button" class="mini-button">Všichni</button>
+              <button id="financeSelectNone" type="button" class="mini-button">Nikdo</button>
+            </div>
+            <div id="financeParticipants" class="participant-grid"></div>
+            <div id="financeCustomShares" class="custom-shares" hidden></div>
+            <div id="financeSplitCheck" class="muted"></div>
+          </fieldset>
+
+          <label>Poznámka<textarea id="financeNote" rows="2"></textarea></label>
+          <div class="form-buttons">
+            <button class="primary" type="submit">Uložit pohyb</button>
+            <button id="financeCancelEdit" class="mini-button" type="button" hidden>Zrušit úpravu</button>
+          </div>
+        </form>
+      </details>
+
+      <details class="accordion finance-accordion">
+        <summary>Plánovaný výdaj</summary>
+        <form id="financePlanForm" class="body finance-form">
+          <div class="form-grid">
+            <label>Popis<input id="planDescription" required placeholder="např. Sahara"></label>
+            <label>Počet<input id="planQty" type="number" min="1" step="1" value="1"></label>
+          </div>
+          <div class="form-grid">
+            <label>Cena za osobu / kus<input id="planUnit" type="number" min="0" step="0.01" inputmode="decimal" required></label>
+            <label>Měna<select id="planCurrency"><option>EUR</option><option selected>TND</option><option>CZK</option></select></label>
+          </div>
+          <label>Poznámka<input id="planNote"></label>
+          <button class="primary" type="submit">Přidat do plánu</button>
+        </form>
+      </details>
+
+      <h2>Salda účastníků</h2>
+      <div id="financeSettlements" class="stack"></div>
+      <div class="muted finance-hint">Do salda se započítávají jen výdaje, kde je známý plátce i rozdělení. Nejasné položky zůstávají označené k doplnění.</div>
+
+      <h2>Plán</h2>
+      <div id="financePlans" class="stack"></div>
+
+      <h2>Pohyby</h2>
+      <div id="financeTransactions" class="stack"></div>
+
+      <details class="accordion finance-accordion">
+        <summary>Účastníci</summary>
+        <div class="body">
+          <div id="financeParticipantList" class="participant-list"></div>
+          <form id="financeParticipantForm" class="inline-form">
+            <input id="financeParticipantName" required placeholder="Jméno">
+            <button class="primary small" type="submit">Přidat</button>
+          </form>
+        </div>
+      </details>
+    </section>
+
     <section class="page" data-page="private">
       <div class="section-head"><h2>Moje údaje</h2><span>jen v tomto zařízení</span></div>
       <div class="card form-card">
@@ -120,6 +248,7 @@
   <nav class="bottom-nav" aria-label="Hlavní navigace">
     <button class="nav-btn active" data-target="home"><span>⌂</span>Domů</button>
     <button class="nav-btn" data-target="services"><span>◷</span>Služby</button>
+    <button class="nav-btn" data-target="finance"><span>€</span>Finance</button>
     <button class="nav-btn" data-target="info"><span>ⓘ</span>Info</button>
     <button class="nav-btn" data-target="contacts"><span>☎</span>Kontakty</button>
     <button class="nav-btn" data-target="trips"><span>☀</span>Výlety</button>
@@ -128,5 +257,6 @@
   <script src="./pwa.js" defer></script>
   <script src="./app.js" defer></script>
   <script src="./tides.js" defer></script>
+  <script src="./finance.js" defer></script>
 </body>
 </html>
