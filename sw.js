@@ -1,5 +1,5 @@
-const CACHE='yadis-pwa-v1.5.1';
-const ASSETS=['./','./index.html','./style.css','./pwa.js','./app.js','./tides.js','./finance.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
+const CACHE='yadis-pwa-v1.5.2';
+const ASSETS=['./','./index.html','./style.css','./pwa.js','./app.js','./tides.js','./finance.js','./finance-plan-edit.js','./manifest.webmanifest','./icons/icon-192.png','./icons/icon-512.png'];
 
 self.addEventListener('install',e=>e.waitUntil(
   caches.open(CACHE).then(c=>c.addAll(ASSETS)).then(()=>self.skipWaiting())
