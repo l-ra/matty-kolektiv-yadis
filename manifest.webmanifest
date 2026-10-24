@@ -1,25 +1,41 @@
 {
+  "id": "/matty-kolektiv-yadis/",
   "name": "Matty kolektiv · Yadis Djerba",
   "short_name": "Yadis Djerba",
   "description": "Offline průvodce pobytem v Yadis Djerba Golf Thalasso & Spa",
-  "start_url": "./",
-  "scope": "./",
+  "start_url": "/matty-kolektiv-yadis/",
+  "scope": "/matty-kolektiv-yadis/",
   "display": "standalone",
+  "display_override": ["standalone"],
   "background_color": "#f4f8fb",
   "theme_color": "#075985",
   "lang": "cs",
+  "dir": "ltr",
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "./icons/icon-192.png",
+      "src": "/matty-kolektiv-yadis/icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "./icons/icon-512.png",
+      "src": "/matty-kolektiv-yadis/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/matty-kolektiv-yadis/icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/matty-kolektiv-yadis/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
